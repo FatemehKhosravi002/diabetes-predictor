@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>پیش‌بینی دیابت 🩺</title>
+    <style>
+        body {
+            background: #f9f6f1;
+            font-family: 'Tahoma', sans-serif;
+            direction: rtl;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 450px;
+            margin: auto;
+            background: #fff;
+            padding: 25px 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.1em;
+        }
+        input[type=number] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input[type=number]:focus {
+            border-color: #4a90e2;
+            outline: none;
+            background: #eef5fc;
+        }
+        button {
+            background-color: #4a90e2;
+            color: white;
+            font-size: 1.2em;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        .emoji {
+            font-size: 1.3em;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .result.positive {
+            background: #f9d6d5;
+            color: #b71c1c;
+        }
+        .result.negative {
+            background: #d0f0d7;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>پیش‌بینی دیابت 🩺</h2>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }} 
+                    <span class="emoji">📝</span>
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: red; font-size: 0.9em;">
+                        {{ field.errors|striptags }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <button type="submit">پیش‌بینی کن 🔮</button>
+        </form>
+
+        {% if prediction is not None %}
+            <div class="result {% if prediction == 1 %}positive{% else %}negative{% endif %}">
+                نتیجه: 
+                {% if prediction == 1 %}
+                    🛑 احتمال دیابت وجود دارد!
+                {% else %}
+                    ✅ دیابت مشاهده نشد.
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
