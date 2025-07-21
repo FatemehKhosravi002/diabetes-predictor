@@ -4,8 +4,11 @@ import joblib
 import numpy as np
 
 # مسیر مدل
-model_path = '/home/bahar/last-try/rf_model.joblib'
+import os
+from django.conf import settings
+model_path = os.path.join(settings.BASE_DIR, 'rf_model.joblib')
 model = joblib.load(model_path)
+
 
 def PredictView(request):
     result = None  # فقط عدد 0 یا 1

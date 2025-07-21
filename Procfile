@@ -1,1 +1,2 @@
-web: gunicorn datamining.wsgi
+web: gunicorn datamining.wsgi --log-file -
+
